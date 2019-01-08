@@ -87,10 +87,10 @@ class EpayphIpn {
     protected function curlPost($encoded_data) {
 
         if ($this->use_ssl) {
-            $uri = 'https://'.$this->getPaypalHost().'/api/validateIPN';
+            $uri = 'https://'.$this->getEpayphHost().'/api/validateIPN';
             $this->post_uri = $uri;
         } else {
-            $uri = 'http://'.$this->getPaypalHost().'/api/validateIPN';
+            $uri = 'http://'.$this->getEpayphHost().'/api/validateIPN';
             $this->post_uri = $uri;
         }
         
@@ -135,11 +135,11 @@ class EpayphIpn {
     protected function fsockPost($encoded_data) {
     
         if ($this->use_ssl) {
-            $uri = 'ssl://'.$this->getPaypalHost();
+            $uri = 'ssl://'.$this->getEpayphHost();
             $port = '443';
             $this->post_uri = $uri.'/cgi-bin/webscr';
         } else {
-            $uri = $this->getPaypalHost(); // no "http://" in call to fsockopen()
+            $uri = $this->getEpayphHost(); // no "http://" in call to fsockopen()
             $port = '80';
             $this->post_uri = 'http://'.$uri.'/cgi-bin/webscr';
         }
@@ -152,7 +152,7 @@ class EpayphIpn {
         } 
 
         $header = "POST /cgi-bin/webscr HTTP/1.1\r\n";
-        $header .= "Host: ".$this->getPaypalHost()."\r\n";
+        $header .= "Host: ".$this->getEpayphHost()."\r\n";
         $header .= "Content-Type: application/x-www-form-urlencoded\r\n";
         $header .= "Content-Length: ".strlen($encoded_data)."\r\n";
         $header .= "Connection: Close\r\n\r\n";
@@ -172,7 +172,7 @@ class EpayphIpn {
         fclose($fp);
     }
     
-    private function getPaypalHost() {
+    private function getEpayphHost() {
         if ($this->use_sandbox) return self::SANDBOX_HOST;
         else return self::EPAYPH_HOST;
     }
